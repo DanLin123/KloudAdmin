@@ -1,0 +1,64 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<title>Cluster</title>
+</head>
+<body>
+	<wicket:extend>
+		<div class="browsePath">
+			<h4>
+				<span wicket:id="name" id="name">Message goes here</span>
+			</h4>
+		</div>
+
+		<div class="btn-group">
+			<input type="button" wicket:id="addKsLinkButton" value="添加表空间" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+			<input type="button" wicket:id="deleteKsLinkButton" value="删除表空间" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		</div>
+
+		<div class="group">
+			<h3>集群</h3>
+			
+			<table class="infoTable">
+				<tr>
+					<th width="15%">网络选择策略：</th>
+					<td><span wicket:id="snitch" id="snitch">Message goes
+							here</span></td>
+				</tr>
+				<tr>
+					<th>数据分区策略：</th>
+					<td><span wicket:id="partitioner" id="partitioner">Message
+							goes here</span></td>
+				</tr>
+				<tr>
+					<th>Schema 版本：</th>
+					<td><span wicket:id="schema" id="Schema Version">Message
+							goes here</span></td>
+				</tr>
+				<tr>
+					<th>API 版本号：</th>
+					<td><span wicket:id="api" id="API Version">Message goes
+							here</span></td>
+				</tr>
+				<tr>
+					<th>表空间个数：</th>
+					<td><span wicket:id="keyspaceNum" id="KeyspaceNum">Message
+							goes here</span></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- keyspace List -->
+		<div class="group">
+			<h3>表空间列表</h3>
+			<ul>
+			<span wicket:id="keyspaceList"><li> <a wicket:id="keyspaceLink"><span wicket:id="keyspaceName"></span></a></li>
+			</span>
+			</ul>
+			
+		</div>
+	</wicket:extend>
+</body>
+</html>

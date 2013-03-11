@@ -1,0 +1,21 @@
+
+<wicket:extend>
+<input type="hidden" id="nodesInfocallbackURL" wicket:id="nodesInfoJsonCallbackURL" />
+<div class="browsePath">
+		<h4>
+		 Ring View
+		</h4>
+</div>
+<div wicket:id="tabs"> 
+    <ul> 
+        <li><a href="#tab1">Ring List</a></li> 
+        <li><a href="#tab2">Ring Circle</a></li>  
+    </ul> 
+    <div id="tab1"> 
+	    <span wicket:id="ringPanel"></span>
+	</div> 
+    <div id="tab2"> 
+         <span wicket:id="ringCirclePanel"></span>
+    </div> 
+</div>
+</wicket:extend>

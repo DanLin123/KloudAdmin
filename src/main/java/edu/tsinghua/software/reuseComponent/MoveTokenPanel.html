@@ -1,0 +1,21 @@
+<wicket:panel>
+	<div>
+	    <span class="label label-info">Enter a new token to assign to the node.</span>
+		<br>
+		<br>
+		<p>current token: <span wicket:id="token"> token</span></p>
+	
+		<form wicket:id="form"> 
+			<div>
+				New Token:  <input wicket:id="newToken" type="text" size="40"> 
+			</div>
+			<div>
+				<input type="button" wicket:id="move" value="Move Node" class="btn"/> 
+				<input type="button" wicket:id="cancel" value="Cancel" class="btn"/>
+			</div>
+
+		</form>
+
+	</div>
+
+</wicket:panel>

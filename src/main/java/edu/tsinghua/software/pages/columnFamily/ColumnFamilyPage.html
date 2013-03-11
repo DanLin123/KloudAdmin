@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="utf-8" />
+<title>Kloud Admin</title>
+</head>
+<body>
+	<wicket:extend>
+		<!-- browePath-->
+		<div class="browsePath">
+			<h4>
+				<a wicket:id="clusterNevigation"><span wicket:id="clusterName"></span></a>
+				>> <a wicket:id="keyspaceNevigation"><span wicket:id="ksName"></span></a>
+				>> <span wicket:id="cfName"></span>
+			</h4>
+		</div>
+		
+		<!--  button groups in columnFamily page-->
+		<div class="btn-group">
+			<input type="button" wicket:id="dropColumnFamilyLink" value="Drop Current Columnfamily" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="editColumnFamilyLink" value="Edit ColumnFamily" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="createIndexLink" value="Create Column or Index" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="truncateColumnFamilyLink" value="Truncate ColumnFamily" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="browseDataLink" value="Browse Data" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="insertRowLink" value="Insert Row" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			
+		</div>
+	
+
+		<!-- ColumnFamily info -->
+		
+		 <div wicket:id="tabs" style="margin-top:10px; font-size:13px"> 
+		    <ul> 
+		        <li><a href="#tab1">ColumnFamily Configure</a></li> 
+		        <li><a href="#tab2">ColumnFamily Running Statics</a></li>  
+		    </ul> 
+		    <div id="tab1"> 
+			    <span wicket:id="cfInfo"></span>
+			</div> 
+		    <div id="tab2"> 
+		         <span wicket:id="cfStatics"></span>
+		    </div> 
+		</div> 
+	
+		
+	<!-- 	<span wicket:id="cfInfo"></span>
+         <span wicket:id="cfStatics"></span>  -->
+		<!-- Column  Info -->
+		<div class="group">
+			<h3>Column Information</h3>
+			<table class="verticalTable">
+				<tbody>
+					<tr>
+						<th>Column Name</th>
+						<th>Validation Class</th>
+						<th>Index Name</th>
+						<th>Index Type</th>
+					</tr>
+					<tr wicket:id="indexRows">
+						<td wicket:id="columnName">columnName</td>
+						<td wicket:id="validationClass">validationClass</td>
+						<td wicket:id="indexName">indexName</td>
+						<td wicket:id="indexType">indexType</td>
+						<!-- <td><a href="#" wicket:id="deleteIndex">Delete Index</a> </td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</wicket:extend>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<wicket:extend>
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="ringView">Ring View</a>
+			>> Node View
+		</h4>
+	</div>
+
+	<form wicket:id="form"> 
+		<div class="btn-group"> 
+			<input type="button" wicket:id="move" value="Move Token" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="drain" value="Drain" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+		 	<input type="button" wicket:id="gc" value="Garbage Collect" class="btn ui-button ui-widget ui-state-default ui-corner-all"/> 
+		 	<input type="button" wicket:id="decommission" value="Decommission" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		 	<input type="button" wicket:id="cleanUp" value="Clean Up" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		 	<input type="button" wicket:id="flush" value="Flush" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		 	<input type="button" wicket:id="scrub" value="Srub" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		 	<input type="button" wicket:id="repair" value="Repair" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		 	<input type="button" wicket:id="compaction" value="Compaction" class="btn ui-button ui-widget ui-state-default ui-corner-all" /> 
+		</div>
+	</form>
+	
+	<span wicket:id="nodeInfoPanel"></span>
+	<!--  pop up dialog -->
+	<div id="move-dialog" wicket:id="moveDialog">[dialog]</div>
+	
+	
+	
+	<div id="dialog-confirm" title="Confirm Dialog" style="display: none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+		</span><span id="dialog-comfirm-text"></span></p>
+	</div>
+	
+
+</wicket:extend>

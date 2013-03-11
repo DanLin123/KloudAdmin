@@ -1,0 +1,26 @@
+<wicket:extend>
+
+	<div wicket:id="result">
+		<span wicket:id="resultPanel"></span>
+	</div>
+	
+
+	<form wicket:id="form">
+	  <span wicket:id="result">output message</span>
+		<p>
+			<textarea wicket:id="lasqlCommandArea" style="width: 700px; height: 120px;"></textarea>
+		</p>
+		<input type="submit" value="Excute" wicket:id="excute" /> <input
+			type="submit" value="Clear" wicket:id="clear" />
+	</form>
+	
+	<a href="#" target="right" class="logo" wicket:id="sqlHelp"> <img
+		src="./img/b_sql.png"></a>
+	
+	<div wicket:id="helpCont">
+		<p>
+			<textarea wicket:id="helpDocument"
+				style="width: 700px; height: 500px;"></textarea>
+		</p>
+	</div>
+</wicket:extend>

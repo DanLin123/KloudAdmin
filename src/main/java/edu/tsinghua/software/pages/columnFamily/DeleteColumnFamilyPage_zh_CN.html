@@ -1,0 +1,39 @@
+<wicket:extend>
+	<script LANGUAGE="JavaScript">
+	<!--
+	// Nannette Thacker http://www.shiningstar.net
+	function confirmSubmit()
+	{
+	var agree=confirm("确定要删除选定的表空间吗？");
+	if (agree)
+		return true ;
+	else
+		return false ;
+	}
+	// -->
+	</script>
+	
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNavigation"><span wicket:id="clusterName"></span></a>
+			>> <a wicket:id="keyspaceNevigation"><span
+				wicket:id="keyspaceName"></span></a> >>删除表
+		</h4>
+	</div>
+	
+	<div wicket:id="feedback"></div>
+	
+	<form wicket:id="userForm" class="group">
+		<h3>表</h3>
+		<div class="itemList">
+			<span wicket:id="listColumnFamilies"></span>
+		</div>
+		<div>
+		<a href="#" wicket:id="checkAll">全选</a> <a href="#"
+			wicket:id="uncheckAll">取消</a>
+		</div>
+	<!-- 	<div><input type="submit" value="Drop"/></div> -->
+       <input type="submit" value="删除" onClick="return confirmSubmit()"/> 
+		 
+	</form>
+</wicket:extend>

@@ -1,0 +1,166 @@
+
+<wicket:head>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="./js/excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.image.js"></script>
+<script src="js/jquery-ui-timepicker-addon.js"></script>
+<script src="js/jquery.selectBox.min.js" type="text/javascript"></script>
+<link href="css/jquery.selectBox.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+var timeStart = 0;
+var timeEnd = 0;
+var objectList = new Array();
+var selectObject;
+var recentTime = '0';
+function loadFailed(){ 
+	$('#loading').text('无法获得监控数据');
+}
+
+
+function plot(chartID, series_list, metric)
+{
+	$('#graphs').append("<div id='"+chartID+"' style=\"width: 400px; height:200px;margin-bottom:20px;margin-left:60px;float:left\"></div>");
+	console.log('Drawing graph with following data:')
+	console.log(series1);
+    var options = {
+            lines: { show: true },
+            points: { show: true },
+            xaxis: { mode: "time" }
+        };
+    var placeholder = $("#"+chartID);
+     
+    $.plot(placeholder, series_list, options);
+	    
+}
+
+function getGraphImage(){
+	var timeStartObj = $('#startSelector').datetimepicker('getDate');
+	var timeEndObj = $('#endSelector').datetimepicker('getDate');
+	if(timeStartObj!= null && timeEndObj!= null)
+		{
+			timeStart = timeStartObj.getTime();
+			timeEnd = timeEndObj.getTime();
+		}
+	recentTime = $('#time-dropdown').attr('value');
+	console.log(recentTime);
+	tags = JSON.stringify({'host':'ld-VirtualBox','type_instance':'idle','plugin_instance':'0'});
+	console.log($.now());
+	var metric = $('#metricInput').val();
+	console.log(metric)
+	var series1 = {'label': 'test1', 'data': []};
+	var series2 = {'label': 'test2', 'data': []};
+	
+    search_input = {'metric': 'cpu.cpu', 'starttime': 1362903850, 'endtime': 1362903940,'tags': tags};
+ 
+	$.ajax({
+		url : 'http://localhost:5000/read',
+		type : 'POST',
+		dataType : 'json',
+		data :  search_input,
+		success : function(data) {
+			console.log(data);
+			console.log(data.results);	
+			if (data.success == true){
+				$('#loading').text('success');
+				console.log(data);
+			    $('#loading').hide();
+			    var line = new Array();
+			    $.each(data.results, function(k, v) {
+			        console.log(k);
+			        console.log(v);
+			        var point = new Array();
+					point[0] = k * 1000;
+					point[1] = v;
+					var point2 = new Array();
+					point2[0] = k * 1000;
+					point2[1] = v+100;
+					series1['data'].push(point);
+					series2['data'].push(point2);
+			    });
+			    series_list = [series1, series2]
+			    plot('cpu', series_list, metric);
+			} else {
+				loadFailed();
+			}
+
+		},
+		error : loadFailed
+	});
+}
+
+
+$(document).ready(function(){
+	
+        $('#startSelector').datetimepicker({
+        	showSecond: true,
+        	timeFormat: 'hh:mm:ss',
+        	stepHour: 2,
+        	stepMinute: 10,
+        	stepSecond: 10
+        }); 
+		$('#endSelector').datetimepicker({
+			showSecond: true,
+			timeFormat: 'hh:mm:ss',
+			stepHour: 2,
+			stepMinute: 10,
+			stepSecond: 10
+		});		  
+	    $("#time-dropdown").selectBox();
+	    $("#time-dropdown")
+		.selectBox()
+		.change( function() {
+			recentTime = $(this).attr('value');
+			console.log(recentTime);
+			if(recentTime == 0){
+				$("#startSelector").removeAttr("disabled");
+				$("#endSelector").removeAttr("disabled");
+				
+			} else {
+				$("#startSelector").attr("disabled", "disabled");
+				$("#endSelector").attr("disabled", "disabled");		
+			}
+		
+		});
+	    
+	    $('#go').click(function(e){
+	    	$('#graphs').empty();
+	    	 $('#loading').show();
+	    	e.preventDefault();
+	    	getGraphImage();
+	  
+	    });	
+});
+
+</script>
+</wicket:head>
+<wicket:extend>
+
+ 		 <div class="row span14">
+ 		 	<form class='well form-inline'>
+				<label id="timeScale">时间选择</label>
+				<select id="time-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 80px;">
+				    <option value="0" >手动选择</option>
+					<option value="1200000" selected="selected">最近20分钟</option>
+					<option value="3600000">最近1小时</option>
+					<option value="7200000">最近2小时</option>
+					<option value="14400000">最近4小时</option>
+					<option value="86400000">最近1天</option>
+					<option value="604800000">最近1周</option>
+					<option value="2629743000">最近1月</option>
+				</select>
+				
+			    <label>开始</label>
+			    <input type="text" id="startSelector"  disabled="disabled" style="width: 120px;" />
+			    <label>结束</label>
+				<input type="text" id="endSelector" disabled="disabled" style="width: 120px;" />
+				<button class="btn" id="go">执行</button>
+			</form>
+		</div>
+<div class="row span12">
+	  <p id ="loading" style="display: none" >正在获得监控数据..</p>
+	</div>
+	<div id="graphs" class="row span12">
+	</div>
+	 
+</wicket:extend>

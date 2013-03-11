@@ -1,0 +1,23 @@
+<wicket:extend>
+
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNavigation"><span wicket:id="clusterName"></span></a>
+			>> <span>Delete Keyspace</span>
+		</h4>
+	</div class="group">
+	<div wicket:id="feedback"></div>
+	<form wicket:id="userForm" class="group">
+		<h3>Keyspace List</h3>
+		<div class="itemList">
+			<span wicket:id="keyspaces"></span>
+		</div>
+		<div>
+		<a href="#" wicket:id="checkAll">Check All</a> <a href="#"
+			wicket:id="uncheckAll">Uncheck All</a>
+		</div>
+	<!-- 	<div><input type="submit" value="Drop"/></div> -->
+       <input type="submit" value="Drop" wicket:id="drop"/> 
+		 
+	</form>
+</wicket:extend>

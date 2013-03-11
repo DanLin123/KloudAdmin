@@ -1,0 +1,119 @@
+<wicket:panel>
+<div >
+			<!-- <h3>ColumnFamily Statics</h3> -->
+			<!-- use tabel to show ColumnFamily Statics  -->
+			
+			<table class="infoTable">
+				<tbody>
+					<tr>
+						<th>SSTable数</th>
+						<td wicket:id="sstableCount"></td>
+					</tr>
+					<tr>
+						<th>已使用空间 (live)</th>
+						<td wicket:id="spaceUsedLive"></td>
+					</tr>
+					<tr>
+						<th>已使用空间 (total)</th>
+						<td wicket:id="spaceUsedTotal"></td>
+					</tr>
+					<tr>
+						<th>估计行数</th>
+						<td wicket:id="numberOfkeys"></td>
+					</tr>
+					<tr>
+						<th>Memtable 行数</th>
+						<td wicket:id="mentableColumnsCount"></td>
+					</tr>
+					<tr>
+						<th>Memtable 数据大小</th>
+						<td wicket:id="mentableDataSize"></td>
+					</tr>
+					<tr>
+						<th>Memtable 交换空间</th>
+						<td wicket:id="mentableSwitchCount"></td>
+					</tr>
+					<tr>
+						<th>读次数</th>
+						<td wicket:id="readCount"></td>
+					</tr>
+					<tr>
+						<th>读延迟</th>
+						<td wicket:id="readLatency"></td>
+					</tr>
+					<tr>
+						<th>写次数</th>
+						<td wicket:id="writeCount"></td>
+					</tr>
+					<tr>
+						<th>写延迟</th>
+						<td wicket:id="writeLatency"></td>
+					</tr>
+					<tr>
+						<th>等待任务数</th>
+						<td wicket:id="pendingTask"></td>
+					</tr>
+					<tr>
+						<th>Bloom Filter False Postives</th>
+						<td wicket:id="bloomFilterFalsePostives"></td>
+					</tr>
+					<tr>
+						<th>Bloom Filter False Ratio</th>
+						<td wicket:id="bloomFilterFalseRatio"></td>
+					</tr>
+					<tr>
+						<th>关键字缓存</th>
+						<td wicket:id="keyCache"></td>
+					</tr>
+						<tr>
+							<th>关键字缓存容量</th>
+							<td wicket:id="keyCacheCapacity"></td>
+						</tr>
+						<tr>
+							<th>关键字缓存大小</th>
+							<td wicket:id="keyCacheSize"></td>
+						</tr>
+						<tr>
+							<th>关键字缓存命中率</th>
+							<td wicket:id="keyCacheHitRate"></td>
+						</tr>
+						
+					
+					
+					<tr>
+						<th>行缓存</th>
+						<td wicket:id="rowCache"></td>
+					</tr>
+				
+						<tr>
+						<th>行缓存容量</th>
+						<td wicket:id="rowCacheCapacity"></td>
+						</tr>
+						<tr>
+							<th>行缓存大小</th>
+							<td wicket:id="rowCacheSize"></td>
+						</tr>
+						<tr>
+							<th>行缓存命中率</th>
+							<td wicket:id="rowCacheHitRate"></td>
+						</tr>
+					
+					
+					
+					<tr>
+						<th>压缩行最小值</th>
+						<td wicket:id="compactedRowMinimumSize"></td>
+					</tr>
+					<tr>
+						<th>压缩行最大值</th>
+						<td wicket:id="compactedRowMaximumSize"></td>
+					</tr>
+					
+						<tr>
+						<th>压缩行平均值</th>
+						<td wicket:id="compactedRowMeanSize"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</wicket:panel>

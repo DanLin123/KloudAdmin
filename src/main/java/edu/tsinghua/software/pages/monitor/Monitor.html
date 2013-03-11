@@ -1,0 +1,195 @@
+
+<wicket:extend>
+
+
+<script class="include" type="text/javascript" src="./js/jquery-1.7.1.min.js"></script>
+<script src="js/jquery-ui-1.8.19.custom.min.js"></script>
+<script src="js/jquery-ui-timepicker-addon.js"></script>
+<script src="js/jquery.selectBox.min.js" type="text/javascript"></script>
+<link href="css/jquery.selectBox.css" rel="stylesheet" type="text/css" />
+
+ <link class="include" rel="stylesheet" type="text/css" href="./css/jquery.jqplot.min.css" />
+<link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shCoreDefault.min.css" />
+<link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shThemejqPlot.min.css" />
+<link type="text/css" rel="stylesheet" href="./login/css" />
+
+  <script src="./js/jquery.jqplot.js" type="text/javascript"></script>
+  <script type="text/javascript" src="./plugins/jqplot.dateAxisRenderer.js"></script>
+  <script type="text/javascript" src="./plugins/jqplot.canvasAxisTickRenderer.js"></script>
+  <script type="text/javascript" src="./plugins/jqplot.canvasTextRenderer.js"></script>
+
+
+<input type="hidden" id="objecInfoJsonCallbackURL" wicket:id="objecInfoJsonCallbackURL" />
+<input type="hidden" id="excuteAjaxBehaviorCallbackURL" wicket:id="excuteAjaxBehaviorCallbackURL" />
+<script>
+var timeStart = 0;
+var timeEnd = 0;
+var objectList = new Array();
+var selectObject;
+var recentTime = '0';
+function loadFailed(){ 
+	$('#loading').text('can not get data');
+
+	} 
+function plot(chartID,lines, metric)
+{
+	$('#graphs').append("<div id='"+chartID+"' class='span5' style=\"height:200px;margin-bottom:20px;margin-left:60px;float:left\"></div>");
+	    console.log("first point"+lines[0][0]);
+	    $.jqplot(chartID, [lines], {
+	        title: metric,
+	        gridPadding:{right:35},
+	        axes:{
+	          xaxis:{
+	            renderer:$.jqplot.DateAxisRenderer, 
+	            tickOptions:{formatString:'%H:%M'},
+	            min: lines[0][0],
+	            numberTicks: 10,
+	          }
+	        },
+	        series:[{showMarker:false}],
+	    });
+}
+
+function getGraphImage(){
+	var timeStartObj = $('#startSelector').datetimepicker('getDate');
+	var timeEndObj = $('#endSelector').datetimepicker('getDate');
+	if(timeStartObj!= null && timeEndObj!= null)
+		{
+			timeStart = timeStartObj.getTime();
+			timeEnd = timeEndObj.getTime();
+		}
+	recentTime = $('#time-dropdown').attr('value');
+	console.log(recentTime);
+	$.ajax({
+		url : $('#excuteAjaxBehaviorCallbackURL').attr('value'),
+		type : 'POST',
+		dataType : 'json',
+		data : {timeStart: timeStart.toString(), timeEnd: timeEnd.toString(),  selectObject: selectObject,recentTime:recentTime},
+		success : function(data) {
+		
+		 	var lines =new Array(); 
+		    $('#loading').hide();
+	 		$.each(data, function(index) {
+				var metric = data[index].metric;
+				var points = data[index].points;
+				var line = new Array();
+				for (var i=0;i<=points.length-1;i++) 
+				{ 
+					var point = new Array();
+					point[0] = new Date(new Number(points[i].time));
+					point[1] = new Number(points[i].value);
+					line[i] = point;
+				} 
+				
+				var chart = 'chart'+index;
+				plot(chart,line, metric); 
+			}); 
+			
+		},
+		error : loadFailed
+	});
+}
+
+
+$(document).ready(function(){
+	
+	   /*get keyspace and columnFamily list, show them in dropDown list*/
+		$.ajax({
+			url : $('#objecInfoJsonCallbackURL').attr('value'),
+			type : 'GET',
+			dataType : 'json',
+			success : function(data) {
+				 objectList = data;
+				 $.each(data, function(index) {
+				    objectList[index] = data[index];
+			
+				}); 
+				 $("#object-dropdown").selectBox('options', objectList);
+				 $("#object-dropdown").selectBox('value', 0);   /*set the first item as defalt value  */
+				 selectObject = objectList[$("#object-dropdown").attr('value')];
+				 $("#object-dropdown")
+					.selectBox()
+					.change( function() {
+						selectObject = objectList[$(this).attr('value')];
+					});
+				 
+			},
+			error : function() {
+				$.jGrowl('Something went wrong ');
+			}
+		});
+		
+        $('#startSelector').datetimepicker({
+        	showSecond: true,
+        	timeFormat: 'hh:mm:ss',
+        	stepHour: 2,
+        	stepMinute: 10,
+        	stepSecond: 10
+        }); 
+		$('#endSelector').datetimepicker({
+			showSecond: true,
+			timeFormat: 'hh:mm:ss',
+			stepHour: 2,
+			stepMinute: 10,
+			stepSecond: 10
+		});		   
+	    $("#object-dropdown").selectBox();
+	    $("#time-dropdown").selectBox();
+	    $("#time-dropdown")
+		.selectBox()
+		.change( function() {
+			recentTime = $(this).attr('value');
+			console.log(recentTime);
+			if(recentTime == 0){
+				$("#startSelector").removeAttr("disabled");
+				$("#endSelector").removeAttr("disabled");
+				
+			} else {
+				$("#startSelector").attr("disabled", "disabled");
+				$("#endSelector").attr("disabled", "disabled");		
+			}
+		
+		});
+	    
+	    $('#go').click(function(e){
+	    	$('#graphs').empty();
+	    	 $('#loading').show();
+	    	e.preventDefault();
+	    	getGraphImage();
+	  
+	    });	
+});
+
+</script>
+ 		 <div class="row span14">
+ 		 	<form class='well form-inline'>
+				<label id="timeScale">time</label>
+				<select id="time-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 80px;">
+				    <option value="0" >manual</option>
+					<option value="1200000" selected="selected">recent 20 minutes</option>
+					<option value="3600000">recent 1 hour</option>
+					<option value="7200000">recent 2 hours</option>
+					<option value="14400000">recent 4 hours</option>
+					<option value="86400000">recent 1 day</option>
+					<option value="604800000">recent 1 week</option>
+					<option value="2629743000">recent 1 month</option>
+				</select>
+			    <label>start</label>
+			   <input type="text" id="startSelector"  disabled="disabled" style="width: 120px;" />
+			   <label>end</label>
+				<input type="text" id="endSelector" disabled="disabled" style="width: 120px;" />
+				<label>monitor object</label>
+				<select id="object-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 200px;">
+				<option value="" >None</option>
+				</select>
+		    	
+				<button class="btn" id="go">excute</button>
+			</form>
+		</div>
+<div class="row span12">
+	  <p id ="loading" style="display: none" >getting data..</p>
+	</div>
+	<div id="graphs" class="row span12">
+	</div>
+	 
+</wicket:extend>

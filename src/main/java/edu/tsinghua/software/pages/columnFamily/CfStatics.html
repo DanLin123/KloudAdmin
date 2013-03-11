@@ -1,0 +1,126 @@
+<wicket:panel>
+<div >
+			<!-- <h3>ColumnFamily Statics</h3> -->
+			<!-- use tabel to show ColumnFamily Statics  -->
+			
+			<table class="infoTable">
+				<tbody>
+					<tr>
+						<th>SSTable count</th>
+						<td wicket:id="sstableCount"></td>
+					</tr>
+					<tr>
+						<th>Space used (live)</th>
+						<td wicket:id="spaceUsedLive"></td>
+					</tr>
+					<tr>
+						<th>Space used (total)</th>
+						<td wicket:id="spaceUsedTotal"></td>
+					</tr>
+					<tr>
+						<th>Number of Keys (estimate)</th>
+						<td wicket:id="numberOfkeys"></td>
+					</tr>
+					<tr>
+						<th>Memtable Columns Count</th>
+						<td wicket:id="mentableColumnsCount"></td>
+					</tr>
+					<tr>
+						<th>Memtable Data Size</th>
+						<td wicket:id="mentableDataSize"></td>
+					</tr>
+					<tr>
+						<th>Memtable Switch Count</th>
+						<td wicket:id="mentableSwitchCount"></td>
+					</tr>
+					<tr>
+						<th>Read Count</th>
+						<td wicket:id="readCount"></td>
+					</tr>
+					<tr>
+						<th>Read Latency</th>
+						<td wicket:id="readLatency"></td>
+					</tr>
+					<tr>
+						<th>Write Count</th>
+						<td wicket:id="writeCount"></td>
+					</tr>
+					<tr>
+						<th>Write Latency</th>
+						<td wicket:id="writeLatency"></td>
+					</tr>
+					<tr>
+						<th>Pending Task</th>
+						<td wicket:id="pendingTask"></td>
+					</tr>
+					<tr>
+						<th>Bloom Filter False Postives</th>
+						<td wicket:id="bloomFilterFalsePostives"></td>
+					</tr>
+					<tr>
+						<th>Bloom Filter False Ratio</th>
+						<td wicket:id="bloomFilterFalseRatio"></td>
+					</tr>
+					<!-- <tr>
+						<th>Bloom Filter Space Used</th>
+						<td wicket:id="bloomFilterSpaceUsed"></td>
+					</tr> -->
+					
+					<tr>
+						<th>Key cache</th>
+						<td wicket:id="keyCache"></td>
+					</tr>
+					
+			
+						<tr>
+							<th>Key cache capacity</th>
+							<td wicket:id="keyCacheCapacity"></td>
+						</tr>
+						<tr>
+							<th>Key cache size</th>
+							<td wicket:id="keyCacheSize"></td>
+						</tr>
+						<tr>
+							<th>Key cache hit rate</th>
+							<td wicket:id="keyCacheHitRate"></td>
+						</tr>
+						
+					
+					
+					<tr>
+						<th>Row cache</th>
+						<td wicket:id="rowCache"></td>
+					</tr>
+				
+						<tr>
+						<th>Row cache capacity</th>
+						<td wicket:id="rowCacheCapacity"></td>
+						</tr>
+						<tr>
+							<th>Row cache size</th>
+							<td wicket:id="rowCacheSize"></td>
+						</tr>
+						<tr>
+							<th>Row cache hit rate</th>
+							<td wicket:id="rowCacheHitRate"></td>
+						</tr>
+					
+					
+					
+					<tr>
+						<th>Compacted row minimum size</th>
+						<td wicket:id="compactedRowMinimumSize"></td>
+					</tr>
+					<tr>
+						<th>Compacted row maximum size</th>
+						<td wicket:id="compactedRowMaximumSize"></td>
+					</tr>
+					
+						<tr>
+						<th>Compacted row mean size</th>
+						<td wicket:id="compactedRowMeanSize"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</wicket:panel>

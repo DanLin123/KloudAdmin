@@ -1,0 +1,173 @@
+<wicket:panel>
+
+	<script> 
+      var canvas;
+      var context;
+      var ringX;
+      var ringY;
+      var ringRadius;
+      var nodes;
+      
+      window.onload = function() {
+    	//    document.getElementById('clickLink').click();
+    
+			canvas = document.getElementById("myCanvas");
+			context = canvas.getContext("2d");
+			ringX = canvas.width / 2;
+			ringY = canvas.height / 2;
+			ringRadius = 250;
+
+			context.beginPath();
+			context.arc(ringX, ringY, ringRadius, 0, 2 * Math.PI, false);
+			context.fillStyle = "#8ED6FF";
+			context.lineWidth = 2;
+			context.strokeStyle = "#AAA";
+			context.shadowColor = '#AAA';
+			context.shadowBlur = 5;
+			context.stroke();
+
+			$.ajax({
+						url : $('#nodesInfocallbackURL').attr('value'),
+						type : 'GET',
+						dataType : 'json',
+						success : function(data) {
+							nodes = data;
+							$.each(data, function(index) {
+								drawCirle(data[index].token, data[index].ip,data[index].status
+										,ringX, ringY, ringRadius);
+							});
+						},
+						error : function() {
+							$.jGrowl('Something went wrong while getting the nodes info.');
+						}
+					});
+
+		 	//canvas.addEventListener("click", halmaOnClick, false); 
+			 $("#myCanvas").click(function(e){
+				 var mouseX = e.pageX;
+				 var mouseY = e.pageY;
+				 console.log("x"+mouseX);
+				 console.log("y"+mouseY);
+				 
+				 var offset = $("#myCanvas").offset();
+				 mouseX -= offset.left;
+				 mouseY -= offset.top
+				 console.log("x"+mouseX);
+				 console.log("y"+mouseY);
+				 // chekc is clcik on the circle
+				    var len = nodes.length;
+					for ( var i = 0; i < len; i++) {
+
+						var mycircle = getPosition(nodes[i].token, ringX, ringY,
+								ringRadius);
+						var leftX = mycircle.xcoord - mycircle.radius;
+						console.log(leftX);
+						var rightX = mycircle.xcoord + mycircle.radius;
+						console.log(rightX);
+						var upY = mycircle.ycoord + mycircle.radius;
+						console.log(upY);
+						var downY = mycircle.ycoord - mycircle.radius;
+						console.log(downY);
+						var mouseX, mouseY;
+						if (leftX < mouseX && mouseX < rightX && downY < mouseY
+								&& mouseY < upY) {
+							showDialog(i,mouseX,mouseY);
+						}		
+					} 
+			}); 
+		};
+
+		/*    draw a circle based on token*/
+		function drawCirle(tokenNumber, ip, status, ringX, ringY, ringRadius) {
+			var mycirclePosition = getPosition(tokenNumber, ringX, ringY,
+					ringRadius);
+			context.beginPath();
+			context.arc(mycirclePosition.xcoord, mycirclePosition.ycoord,
+					mycirclePosition.radius, 0, 2 * Math.PI, false);		
+			context.lineWidth = 5;
+			
+			if(status == "Up")
+			{
+				context.fillStyle = "#8ED6FF";
+				context.shadowColor = '#8ED6FF';
+				context.strokeStyle = "#8ED6FF";
+			}
+			else
+			{
+				context.fillStyle = "#FF6600";
+				context.shadowColor = '#FF6600';
+				context.strokeStyle = "#FF6600";
+				
+			}
+			context.shadowBlur = 10;
+			context.fill();
+			context.stroke();
+
+			context.lineWidth = 1;
+			context.lineStyle = "#000000";
+			context.fillStyle = "#808080";
+			context.shadowBlur = 0;
+			context.font = "15px sans-serif";
+			context.fillText(ip, mycirclePosition.xcoord + 13,
+					mycirclePosition.ycoord - 10);
+
+		}
+
+		function getPosition(tokenNumber, ringX, ringY, ringRadius) {
+			var degree = (2 * tokenNumber * Math.PI) / Math.pow(2, 127);
+
+			var x = Math.sin(degree);
+			var centerX = ringX + x * ringRadius;
+			var y = Math.cos(degree);
+			var centerY = ringY - y * ringRadius;
+			return new mycircle(centerX, centerY, 15);
+
+		}
+
+		/*  a circle object */
+		function mycircle(x, y, r) {
+			this.xcoord = x;
+			this.ycoord = y;
+			this.radius = r;
+		}
+		/*  get clickPosition */
+		function clickPosition(x, y) {
+			this.xClick = x;
+			this.yClick = y;
+		}
+		
+		function showDialog(i,mouseX,mouseY)
+		{
+			console.log("running");
+			$('#dialog').empty();
+			$('#dialog').dialog('option','position', [mouseX+100,mouseY+100]);
+			$('#dialog').dialog('open');
+			$('#dialog').append("<table ><tbody><tr><th>Token</th><td>"+ nodes[i].token+"</td></tr>"); 
+			$('#dialog').append("<tr><th>Endpoint</th><td>"+nodes[i].ip+"</td></tr>");
+			$('#dialog').append("<tr><th>Uptime</th><td>"+nodes[i].uptime+"</td></tr>");
+			$('#dialog').append("<tr><th>MemMax</th><td>"+nodes[i].memMax+"</td></tr>");
+			$('#dialog').append("<tr><th>MemUsed</th><td>"+nodes[i].memUsed+"</td></tr>");
+			$('#dialog').append("<tr><th>DataCenter</th><td>"+nodes[i].dataCenter+"</td></tr>");
+			$('#dialog').append("<tr><th>Rack</th><td>"+nodes[i].rack+"</td></tr>");
+			$('#dialog').append("<tr><th>Status</th><td>"+nodes[i].status+"</td></tr>");
+			$('#dialog').append("<tr><th>State</th><td>"+nodes[i].state+"</td></tr>");
+			$('#dialog').append("<tr><th>Load</th><td>"+nodes[i].load+"</td></tr>");
+			$('#dialog').append("<tr><th>Owns</th><td>"+nodes[i].owns+"</td></tr>");
+			var token_url = $('#nodes a#'+nodes[i].token);
+			$('#dialog').append("</tbody></table>");
+			$('#dialog').append('<div style=\"margin:10px 15px 5px;\"><a href=\"#\" onclick=\"'+token_url.attr('onclick')+'\" style=\"color: #00f\">go to node deetails page</a>');
+			$('#dialog').append("</div>");
+			
+		
+		}
+		
+	</script>
+
+	<canvas id="myCanvas" width="850" height="600" style="border: 0px solid;">
+		<p wicket:id="dialog" id="dialog"></p>
+		<div id="nodes" wicket:id="nodes">
+		    <a href="#" wicket:id="nodeDetail" ></a>
+		</div>	
+		<div wicket:id="errorDialog">[dialog]</div> 
+    </canvas>
+</wicket:panel>

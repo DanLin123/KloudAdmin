@@ -1,0 +1,105 @@
+<wicket:panel>
+	<table>
+		<tr>
+			<td>
+				<!-- logo  -->
+				<div id="pmalogo" style="margin-top: 1 cm;float:left;">
+					<a href="http://166.111.131.53/trac/Test/wiki/WikiStart?version=49"
+						target="_blank"><img src="./LaUDlogo.png" id="imLogo"
+						name="imLogo" alt="KloudAdmin"></a>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<!-- navigation pics -->
+				<div id="leftframelinks">
+
+					<!-- home page navition -->
+					<a href="#" target="right" class="logo" wicket:id="homePageLink"><img
+						src="./img/b_home.png" name="imLogo" alt="KloudAdmin" border="0"></a>
+
+					<!-- sql navigation  -->
+					<a href="#" target="right" class="logo" wicket:id="cqlLink"> <img
+						src="./img/b_sql.png"></a>
+
+					<!-- exit navigation  -->
+					<a href="#" target="_blank" class="logo" wicket:id="logOutLink"><img
+						src="./img/s_loggoff.png"></a>
+
+					<!--help navigation  -->
+				<!-- 	<a href="#" target="_blank" class="logo"><img
+						src="./img/b_help.png"></a> -->
+				</div>
+			</td>
+		</tr>
+		<tr>
+		<td>
+			
+<!-- 	<button id="cassandraKs">Cassandra system Keyspaces</button> -->
+	 <div id ="cassandraKsList">
+        <ul class="nav nav-list">
+            
+		    <li class="nav-header">系统表空间</li>
+			<li wicket:id="listview" id="keyspaceList" class="child">
+                <a href="#" wicket:id="framePageLink" target="right">
+                <span wicket:id="linkName">
+                linkToPage1
+                </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+     <div id="laudKsList">
+        <ul class="nav nav-list">
+			<li class="nav-header">Laud表空间</li>
+			<li wicket:id="laudksListview" id="keyspaceList" class="child">
+                <a href="#" wicket:id="framePageLink" target="right">
+                <span wicket:id="linkName">
+                linkToPage1
+                </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+     <div id="customKs">
+        <ul class="nav nav-list">
+			<li class="nav-header">自定义表空间</li>
+			<li wicket:id="customksListview" id="keyspaceList" class="child">
+                <a href="#" wicket:id="framePageLink" target="right">
+                <span wicket:id="linkName">
+                linkToPage1
+                </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+		</td>
+		</tr>
+	</table>
+
+    
+     <script>
+	     $(document).ready(function() {
+	    	 $(".child").hide();
+	    	});
+	    displaymessage("#cassandraKsList .nav-header","#cassandraKsList .child");
+	    displaymessage("#laudKsList .nav-header","#laudKsList .child");
+	    displaymessage("#customKs .nav-header","#customKs .child");
+	    
+		function displaymessage(father, child)
+		{
+			$(father).click(function() {
+				if($(child).is(":visible"))
+				{
+					$(child).hide("slow");
+				}
+				else
+				{
+					$(child).show("slow");
+				}
+				
+			});
+		}
+	</script>
+</wicket:panel>

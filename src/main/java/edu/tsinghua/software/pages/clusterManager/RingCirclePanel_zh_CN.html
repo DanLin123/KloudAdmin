@@ -1,0 +1,238 @@
+<wicket:panel>
+	<script> 
+      var canvas;
+      var context;
+      var ringX;
+      var ringY;
+      var ringRadius;
+      var nodes;
+      var mycolor =  ['#FF6600','#99FF00','#993399','#6699FF','#FFFF00','#666600','#9966CC','#996633','#FF6699','#006600',
+                      '#CC0033','#CC9966'];
+     
+      
+      window.onload = function() {
+    	  
+    	//    document.getElementById('clickLink').click();
+    	
+    
+			canvas = document.getElementById("myCanvas");
+			context = canvas.getContext("2d");
+			ringX = canvas.width / 2;
+			ringY = canvas.height / 2;
+			ringRadius = 250;
+ 
+
+			$.ajax({
+						url : $('#nodesInfocallbackURL').attr('value'),
+						type : 'GET',
+						dataType : 'json',
+						success : function(data) {
+							nodes = data;
+							//get lenght of data
+							var lenght=0;
+							$.each(data, function(index){
+								lenght ++;
+							});
+							//arc, 如果只有一个token,画一个整圆
+							if(lenght == 1)
+								{
+									drawArc(0, Math.PI*2, mycolor[0]); 
+								}
+							else
+								{
+									$.each(data, function(index){
+										var colorIndex;
+										if(index<12)
+											{
+												colorIndex = index;
+											}
+										else
+											{
+											    colorIndex = index%6;
+											}
+				
+										 //caculate token degree
+										var startDegree;
+										var endDegree 
+										if(index==0)
+											{
+											 
+												startDegree = (2 * data[lenght-1].token * Math.PI) / Math.pow(2, 127)-Math.PI/2; 
+											}
+										else
+											{
+											 	startDegree = (2 * data[index-1].token * Math.PI) / Math.pow(2, 127)-Math.PI/2; 
+											
+											}
+										
+										endDegree = (2 * data[index].token * Math.PI) / Math.pow(2, 127)-Math.PI/2; 
+									
+										drawArc(startDegree, endDegree, mycolor[colorIndex]); 
+									
+									});
+								}
+							
+						
+							
+							//toekn
+							$.each(data, function(index) {
+								var colorIndex;
+								if(index<12)
+									{
+										colorIndex = index;
+									}
+								else
+									{
+									    colorIndex = index%6;
+									}
+								//token
+								drawCirle(data[index].token, data[index].ip,data[index].status
+										,ringX, ringY, ringRadius,mycolor[colorIndex] );
+							});
+							
+						},
+						error : function() {
+							$.jGrowl('Something went wrong while getting the nodes info.');
+						}
+					});
+
+		 	//canvas.addEventListener("click", halmaOnClick, false); 
+			 $("#myCanvas").click(function(e){
+				 var mouseX = e.pageX;
+				 var mouseY = e.pageY;
+			
+				 
+				 var offset = $("#myCanvas").offset();
+				 mouseX -= offset.left;
+				 mouseY -= offset.top
+			
+				 // chekc is clcik on the circle
+				    var len = nodes.length;
+					for ( var i = 0; i < len; i++) {
+
+						var mycircle = getPosition(nodes[i].token, ringX, ringY,
+								ringRadius);
+						var leftX = mycircle.xcoord - mycircle.radius;
+					/* 	console.log(leftX); */
+						var rightX = mycircle.xcoord + mycircle.radius;
+					/* 	console.log(rightX); */
+						var upY = mycircle.ycoord + mycircle.radius;
+					/* 	console.log(upY); */
+						var downY = mycircle.ycoord - mycircle.radius;
+						console.log(downY);
+						var mouseX, mouseY;
+						if (leftX < mouseX && mouseX < rightX && downY < mouseY
+								&& mouseY < upY) {
+							showDialog(i,mouseX,mouseY);
+						}		
+					} 
+			}); 
+		};
+		
+		//draw arc
+		function drawArc(startDegree, endDegree,color)
+		{
+			context.beginPath();
+			context.arc(ringX, ringY, ringRadius, startDegree, endDegree, false);
+			console.log("******"+startDegree);
+			console.log(endDegree);
+		 	context.fillStyle = color;
+			context.lineWidth = 2; 
+			context.strokeStyle = color;
+		    context.shadowColor = color; 
+			context.shadowBlur = 5;
+			context.stroke(); 
+		}
+
+		/*    draw a circle based on token*/
+		function drawCirle(tokenNumber, ip, status, ringX, ringY, ringRadius, color) {
+			//draw token
+			var mycirclePosition = getPosition(tokenNumber, ringX, ringY,
+					ringRadius);
+			context.beginPath();
+			context.arc(mycirclePosition.xcoord, mycirclePosition.ycoord,
+					mycirclePosition.radius, 0, 2 * Math.PI, false);		
+			context.lineWidth = 5;
+			
+			 if(status == "Down")
+			{
+				color='#000000';
+			}
+		
+			context.fillStyle = color;
+			context.shadowColor = color;
+			context.strokeStyle = color;
+			
+			context.shadowBlur = 10;
+			context.fill();
+			context.stroke();
+	
+			context.lineWidth = 1;
+			context.lineStyle = "#000000";
+			context.fillStyle = "#808080";
+			context.shadowBlur = 0;
+			context.font = "15px sans-serif";
+			context.fillText(ip, mycirclePosition.xcoord + 13,
+					mycirclePosition.ycoord - 10);
+
+		}
+
+		function getPosition(tokenNumber, ringX, ringY, ringRadius) {
+			var degree = (2 * tokenNumber * Math.PI) / Math.pow(2, 127);
+			console.log("######333token position"+ degree);
+
+			var x = Math.sin(degree);
+			var centerX = ringX + x * ringRadius;
+			var y = Math.cos(degree);
+			var centerY = ringY - y * ringRadius;
+			return new mycircle(centerX, centerY, 15);
+
+		}
+
+		/*  a circle object */
+		function mycircle(x, y, r) {
+			this.xcoord = x;
+			this.ycoord = y;
+			this.radius = r;
+		}
+		/*  get clickPosition */
+		function clickPosition(x, y) {
+			this.xClick = x;
+			this.yClick = y;
+		}
+		
+		function showDialog(i,mouseX,mouseY)
+		{
+	
+			$('#dialog').empty();
+			$('#dialog').dialog('option','position', [mouseX+100,mouseY+100]);
+			$('#dialog').dialog('open');
+			$('#dialog').append("<table ><tbody><tr><th>Token</th><td>"+ nodes[i].token+"</td></tr>"); 
+			$('#dialog').append("<tr><th>IP地址</th><td>"+nodes[i].ip+"</td></tr>");
+			$('#dialog').append("<tr><th>在线时间</th><td>"+nodes[i].uptime+"</td></tr>");
+			$('#dialog').append("<tr><th>最大内存数</th><td>"+nodes[i].memMax+"</td></tr>");
+			$('#dialog').append("<tr><th>已用内存数</th><td>"+nodes[i].memUsed+"</td></tr>");
+			$('#dialog').append("<tr><th>数据中心	</th><td>"+nodes[i].dataCenter+"</td></tr>");
+			$('#dialog').append("<tr><th>机架</th><td>"+nodes[i].rack+"</td></tr>");
+			$('#dialog').append("<tr><th>节点状态</th><td>"+nodes[i].status+"</td></tr>");
+			$('#dialog').append("<tr><th>节点动作</th><td>"+nodes[i].state+"</td></tr>");
+			$('#dialog').append("<tr><th>负载</th><td>"+nodes[i].load+"</td></tr>");
+			$('#dialog').append("<tr><th>负载百分比</th><td>"+nodes[i].owns+"</td></tr>");
+			var token_url = $('#nodes a#'+nodes[i].token);
+			$('#dialog').append("</tbody></table>");
+			$('#dialog').append('<div style=\"margin:10px 15px 5px;\"><a href=\"#\" onclick=\"'+token_url.attr('onclick')+'\" style=\"color: #00f\">查看节点详细信息</a>');
+			$('#dialog').append("</div>");
+			
+		
+		}
+		
+	</script>
+
+	<canvas id="myCanvas" width="850" height="600" style="border: 0px solid;">
+		<p wicket:id="dialog" id="dialog"></p>
+		<div id="nodes" wicket:id="nodes">
+		    <a href="#" wicket:id="nodeDetail" ></a>
+		</div>	
+		<div wicket:id="errorDialog">[dialog]</div> 
+    </canvas>
+</wicket:panel>

@@ -1,0 +1,28 @@
+<wicket:panel>
+	<div class="group">
+		<h3>Ring</h3>
+		<!-- use a table to list all the node on the rings -->
+		<table class="verticalTable">
+			<tbody>
+				<tr>
+					<th>Endpoint</th>
+					<th>Load</th>
+					<th>Token</th>
+					<th>Status</th>
+					<th>State</th>
+				</tr>
+				<tr wicket:id="rows">
+					<td wicket:id="address">Node IP</td>
+					<td wicket:id="load">Load</td>
+					<td wicket:id="token">Token</td>
+					<td wicket:id="status">Status</td>
+					<td wicket:id="state">state</td>
+					<td><a href="#" wicket:id="nodeDetail" class="btn">Node Detail</a> </td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	    <div wicket:id="errorDialog">[dialog]</div> 
+	    <div wicket:id="navigator"></div>
+	
+</wicket:panel>

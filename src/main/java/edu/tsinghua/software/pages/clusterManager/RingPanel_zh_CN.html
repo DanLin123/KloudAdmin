@@ -1,0 +1,28 @@
+<wicket:panel>
+	<div class="group">
+		<h3>Ring</h3>
+		<!-- use a table to list all the node on the rings -->
+		<table class="verticalTable">
+			<tbody>
+				<tr>
+					<th>IP地址</th>
+					<th>负载</th>
+					<th>Token</th>
+					<th>状态</th>
+					<th>动作</th>
+				</tr>
+				<tr wicket:id="rows">
+					<td wicket:id="address">IP地址</td>
+					<td wicket:id="load">负载</td>
+					<td wicket:id="token">Token</td>
+					<td wicket:id="status">状态</td>
+					<td wicket:id="state">动作</td>
+					<td><a href="#" wicket:id="nodeDetail" class="btn">详细信息</a> </td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	    <div wicket:id="errorDialog">[dialog]</div> 
+	    <div wicket:id="navigator"></div>
+	
+</wicket:panel>

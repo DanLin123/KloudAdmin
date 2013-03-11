@@ -1,0 +1,31 @@
+<wicket:panel>
+	<div class="group">
+		<h3>表空间运行参数</h3>
+		<!-- use tabel to show keyspace detail  -->
+		<table class="infoTable">
+			<tbody>
+				<tr>
+					<th>读次数</th>
+					<td wicket:id="readCount"></td>
+				</tr>
+				<tr>
+					<th>读延迟</th>
+					<td wicket:id="readLatency"></td>
+				</tr>
+				<tr>
+					<th>写次数</th>
+					<td wicket:id="writeCount"></td>
+				</tr>
+				<tr>
+					<th>写延迟</th>
+					<td wicket:id="writeLatency"></td>
+				</tr>
+				<tr>
+					<th>等待任务数</th>
+					<td wicket:id="pendingTask"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</wicket:panel>

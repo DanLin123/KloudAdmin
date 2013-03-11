@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8" />
+		<title>添加表</title>
+		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+
+</head>
+<body>
+	<wicket:extend>
+	<!-- add coulumn family navigation -->
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNevigation"><span wicket:id="clusterName"></span></a>
+			>> <a wicket:id="keyspaceNevigation"><span
+				wicket:id="keyspaceName"></span></a> >>Add Column Family
+		</h4>
+	</div>
+	
+	
+
+		<form wicket:id="inputForm" class="inputForm">
+			<table>
+				<tr>
+					<td>
+				<tr>
+					<td>表名：</td>
+					<td><input wicket:id="columnFamilyName" type="text" size="40"> *</td>
+				</tr>
+				<tr>
+					<td>表类型:</td>
+					<td><select wicket:id="columnType"></select> *</td>
+				</tr>
+				<tr>
+					<td>比较器类型:</td>
+					<td><select wicket:id="comparator"></select> *</td>
+				</tr>
+				<tr>
+					<td>超级比较器类型:</td>
+					<td><select wicket:id="subcomparator"></select> *</td>
+				</tr>
+				<tr>
+					<td>备注:</td>
+					<td><input wicket:id="comment" type="text" size="40"></td>
+				</tr>
+				<tr>
+					<td>行缓存大小:</td>
+					<td><input wicket:id="rowsCached" type="text" size="40"></td>
+				</tr>
+				<tr>
+					<td>行缓存保存时间(s):</td>
+					<td><input wicket:id="rowCacheSavePeriod" type="text"
+						size="40"></td>
+				</tr>
+				<tr>
+					<td>关键字缓存大小:</td>
+					<td><input wicket:id="keysCached" type="text" size="40"></td>
+				</tr>
+				<tr>
+					<td>关键字缓存保存时间(s):</td>
+					<td><input wicket:id="keyCacheSavePeriod" type="text"
+						size="40"></td>
+				</tr>
+				<tr>
+					<td>读修复几率:</td>
+					<td><input wicket:id="readRepairChance" type="text" size="40"></td>
+				</tr>
+				<tr>
+					<td>垃圾收集频率（s）:</td>
+					<td><input wicket:id="gcGrace" type="text" size="40"></td>
+				</tr>
+			
+				<tr>
+					<td>验证器:</td>
+					<td><input wicket:id="defaultValidationClass" type="text"
+						size="40"></td>
+				</tr>
+				<tr>
+					<td>最小压缩时间:</td>
+					<td><input wicket:id="minCompactionThreshold" type="text"
+						size="40"></td>
+				</tr>
+				<tr>
+					<td>最大压缩时间:</td>
+					<td><input wicket:id="maxCompactionThreshold" type="text"
+						size="40"></td>
+				</tr>
+				</td>
+				</tr>
+
+				<tr>
+					<td colspan="2"><input type="submit" value="确定" />
+						<input type="submit" wicket:id="cancel" value="取消" /></td>
+				</tr>
+			</table>
+		</form>
+		<span wicket:id="feedback">output message</span>
+	</wicket:extend>
+</body>
+</html>

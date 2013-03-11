@@ -1,0 +1,35 @@
+
+<wicket:extend>
+	<!-- nevigation including cluster and keyspace-->
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNevigation"><span wicket:id="clusterName"></span></a>
+			>> <span wicket:id="keyspaceName"></span>
+		</h4>
+	</div>
+
+<!--  button groups, add keyspace button, delete keysapce, edit keyapce, add columnFamily-->
+	<div class="btn-group">
+		<input type="button" wicket:id="deleteKslinkButton" value="Delete Current Keyspace" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+		<input type="button" wicket:id="editKslinkButton" value="编辑表空间" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+		<input type="button" wicket:id="addCflinkButton" value="添加表" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+		<input type="button" wicket:id="deleteCflinkButton" value="删除表" class="btn ui-button ui-widget ui-state-default ui-corner-all" />	
+	</div>
+
+	<!-- keyspace info -->
+	<span wicket:id="kespaceInfo">[keyspace data]</span>
+	<span wicket:id="kespaceStatic">[keyspace data]</span>
+
+	<!--show ColumnFamily-->
+	<div class="group">
+		<h3>表</h3>
+		<ul>
+		<span wicket:id="cfList"><li> <a wicket:id="cfLink"><span
+				wicket:id="cfName"></span></a></li>
+		</span>
+        </ul>
+	</div>
+
+
+</wicket:extend>
+

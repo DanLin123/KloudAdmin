@@ -1,0 +1,24 @@
+
+<wicket:extend>
+	<!-- nevigation including cluster,keyspace column family-->
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNavigation"><span wicket:id="clusterName"></span></a>
+			>> <a wicket:id="keyspaceNavigation"><span
+				wicket:id="keyspaceName"></span></a> >> <a
+				wicket:id="columnFamilyNavigation"><span
+				wicket:id="columnFamilyName"></span></a> >> Browse Data
+		</h4>
+	</div>
+	<form wicket:id="keyForm">
+		<span>Key</span> <input wicket:id="key" type="text" size="40">
+		<input type="submit" value="search" wicket:id="searchButton" />
+	</form>
+	<span wicket:id="feedback">output message</span>
+	<div>
+	 <span wicket:id="numberofKeysLabel"  class="label label-info" ></span>
+	</div>
+	
+	
+	<span wicket:id="browseDataPanel"></span>
+</wicket:extend>

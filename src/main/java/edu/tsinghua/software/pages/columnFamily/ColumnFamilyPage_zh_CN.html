@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="utf-8" />
+<title>Kloud Admin</title>
+</head>
+<body>
+	<wicket:extend>
+		<!-- browePath-->
+		<div class="browsePath">
+			<h4>
+				<a wicket:id="clusterNevigation"><span wicket:id="clusterName"></span></a>
+				>> <a wicket:id="keyspaceNevigation"><span wicket:id="ksName"></span></a>
+				>> <span wicket:id="cfName"></span>
+			</h4>
+		</div>
+		
+		<!--  button groups in columnFamily page-->
+		<div class="btn-group">
+			<input type="button" wicket:id="dropColumnFamilyLink" value="删除表" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="editColumnFamilyLink" value="编辑表" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="truncateColumnFamilyLink" value="清空表" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="createIndexLink" value="添加列/索引" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="browseDataLink" value="浏览数据" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			<input type="button" wicket:id="insertRowLink" value="插入行" class="btn ui-button ui-widget ui-state-default ui-corner-all" />
+			
+		</div>
+	
+
+		<!-- ColumnFamily info -->
+		
+		 <div wicket:id="tabs" style="margin-top:10px; font-size:13px"> 
+		    <ul> 
+		        <li><a href="#tab1">表配置参数</a></li> 
+		        <li><a href="#tab2">表运行参数</a></li>  
+		    </ul> 
+		    <div id="tab1"> 
+			    <span wicket:id="cfInfo"></span>
+			</div> 
+		    <div id="tab2"> 
+		         <span wicket:id="cfStatics"></span>
+		    </div> 
+		</div> 
+	
+		
+	<!-- 	<span wicket:id="cfInfo"></span>
+         <span wicket:id="cfStatics"></span>  -->
+		<!-- Index Info -->
+		<div class="group">
+			<h3>列信息</h3>
+			<table class="verticalTable">
+				<tbody>
+					<tr>
+						<th>列名</th>
+						<th>验证器</th>
+						<th>索引名</th>
+						<th>索引类型</th>
+						
+					</tr>
+					<tr wicket:id="indexRows">
+						<td wicket:id="columnName">columnName</td>
+						<td wicket:id="validationClass">validationClass</td>
+						<td wicket:id="indexName">indexName</td>
+						<td wicket:id="indexType">indexType</td>
+					<!-- 	<td><a href="#" wicket:id="deleteIndex">Delete Index</a> </td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</wicket:extend>
+</body>
+</html>

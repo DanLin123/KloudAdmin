@@ -1,0 +1,228 @@
+
+<wicket:extend>
+	<!DOCTYPE html>
+<!-- saved from url=(0046)http://www.rgraph.net/examples/pie-charts.html -->
+
+    <title>LaUDStore Demo</title>
+
+    <link rel="stylesheet" href="./demo_files/website.css" type="text/css" media="screen">
+    <link rel="icon" type="image/png" href="http://www.rgraph.net/images/favicon.png">
+    
+    <!--<script id="facebook-jssdk" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>-->
+	<script type="text/javascript" async="" src="./demo_files/ga.js"></script>
+	<script src="./demo_files/RGraph.common.core.js"></script>
+    <script src="./demo_files/RGraph.common.dynamic.js"></script>
+    <script src="./demo_files/RGraph.common.tooltips.js"></script>
+	<script src="./demo_files/RGraph.led.js" ></script>
+    <script src="./demo_files/RGraph.pie.js"></script>
+	<script src="./demo_files/RGraph.hbar.js"></script>
+    <script src="./demo_files/RGraph.common.key.js"></script>
+    <script src="./demo_files/RGraph.common.effects.js"></script>
+	<script src="./demo_files/jquery-1.4.js"></script>
+	<script type="text/javascript" src="http://localhost:20002/test.js"></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.original.js"></script><![endif]-->
+
+    <script>
+		var result;var hbar;var first=true;
+		var colors = new Array('red','green','blue','pink','yellow');
+		var request_url ='http://166.111.80.83:8080/CassPre2/servlet/CassPre?callback=?';
+        window.onload = function ()
+        {
+			
+			getTotal(request_url);
+			getPie(request_url);
+		}
+    </script>
+
+	<script>
+		function loadFailed(){ 
+			
+			$('#loading_img').text('加载失败');
+			} 
+		function getTotal(request_url)
+		{
+		 	$.ajax({
+			
+				type : "get",
+						url : request_url,
+						dataType : "jsonp",
+						jsonp : 'callback',
+						async : "ture",
+						data: {path: ""},
+						success : function(data) {	
+							$('#loading_img').hide();
+							getTotalCallback(data);
+						},
+						error:loadFailed
+					
+					});
+	    
+		} 
+		
+		function getTotalCallback(data) {
+			var total = Math.round(data / 1024 / 1024 / 1024);
+			showLED('led', 'TOTAL ' + total + 'GB');
+		}
+		
+		function getPie(request_url) {
+			$.ajax({
+				url : request_url,
+				dataType : "jsonp",
+				jsonp : 'callback',
+				async : "true",
+				data: {path: "/"},
+				success :getPieCallback
+				
+			});
+		}
+
+	
+		function getPieCallback(data) {
+		 /*     alert("totoal"+data);  */
+		 	console.log(data); 
+			console.log(data[0].folerNum);
+			result = data[0];
+			showPie('pie3', data[0]);
+		}
+
+		function getHBar(request_url, path_value) {
+			$.ajax({
+				url : request_url,
+				dataType : "jsonp",
+				jsonp : 'callback',
+				async : "true",				
+				data : {
+				//	path : path_value
+					path:'/movie'
+				},
+				success : getHBarCallback
+			});
+		}
+		function getHBarCallback(data) {
+		/* 	alert(data);
+			console.log(data); */
+			showHBar('hbar', data[0]);
+		}
+	</script>
+	
+	<script>
+	function showLED(ledid, msg)
+	{
+		var led = new RGraph.LED(ledid, msg);
+		led.Set('chart.zoom.hdir', 'center');
+		led.Set('chart.zoom.vdir', 'center');
+		led.Set('chart.light', 'red');
+		led.Draw();
+	}
+	
+	
+	function showPie(pieid, result)
+	{
+		
+		var folerNum = result.folerNum;
+		var ratios = result.ratios;
+		var labels = result.labels;
+		var tips = result.tips;
+
+		var pie = new RGraph.Pie(pieid, ratios);
+		var grandients = new Array(folerNum);
+		for(i=0;i<folerNum;i++)
+		{			
+			grandients[i] = RGraph.RadialGradient(pie, 150,150,0,150,150,150,'white', colors[i%colors.length]);
+		}
+		pie.Set('chart.colors', grandients);
+		pie.Set('chart.text.size', 15);
+	
+		pie.Set('chart.exploded', 5);
+		pie.Set('chart.shadow', true);
+		pie.Set('chart.labels', labels);
+		pie.Set('chart.tooltips', tips);
+		pie.Set('chart.tooltips.event', 'onmousemove');
+		pie.Set('chart.events.click', responsePie);
+		RGraph.isOld() ? pie.Draw() : RGraph.Effects.Pie.RoundRobin(pie);
+		RGraph.isOld() ? pie.Draw() : RGraph.Effects.Pie.Implode(pie, {'duration': 1500});		
+	}
+	
+	function responsePie(e, bar)
+	{   
+	
+        var idx = bar[5];
+		
+        console.log("this is called by responsePie"+result);
+        console.log(result);
+        console.log(result.ids[idx]);
+		getHBar(request_url, '/'+result.ids[idx]);
+	}
+	
+	function showHBar(barid, result)
+	{	
+
+		var folerNum = result.folerNum;
+		var ratios = result.ratios;
+		var labels = result.labels;
+		var tips = result.tips;
+
+
+		if(first){			
+			hbar = new RGraph.HBar(barid, ratios);			
+			first=false;
+		}
+		else{			
+			hbar.data = ratios;
+		}
+		//hbar = new RGraph.HBar(barid, ratios);		
+		hbar.Set('chart.units.post', 'GB');
+		hbar.Set('chart.colors', ['#FDB515']);
+
+		hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
+		hbar.Set('chart.labels.above', true);
+		hbar.Set('chart.labels.above', true);
+		hbar.Set('chart.vmargin', 15);
+		hbar.Set('chart.background.grid', false);
+		hbar.Set('chart.labels', labels);
+		//hbar.Set('chart.labels.above', true);
+		hbar.Set('chart.text.size', 13);
+		if (!RGraph.isOld()) {
+			hbar.Set('chart.tooltips', tips);
+		}		
+		
+		hbar.Set('chart.labels.above.decimals', 1);
+		hbar.Set('chart.xlabels', false);
+		hbar.Set('chart.gutter.left', 250);
+		hbar.Set('chart.gutter.right', 50);
+		hbar.Set('chart.gutter.top', 25);
+		hbar.Set('chart.noxaxis', true);
+		hbar.Set('chart.noxtickmarks', true);
+		hbar.Set('chart.noytickmarks', true);
+		RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);		
+	}
+	</script>
+
+        <script>
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-54706-2']);
+          _gaq.push(['_trackPageview']);
+        
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+
+    <h1><span>LaUDStore</span></h1>
+
+    <script>
+        if (RGraph.isOld()) {
+            document.write('<div style="background-color: #fee; border: 2px dashed red; padding: 5px"><b>Important</b><br /><br /> Internet Explorer does not natively support the HTML5 canvas tag, so if you want to see the charts, you can either:<ul><li>Install <a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a></li><li>Use ExCanvas. This is provided in the RGraph Archive.</li><li>Use another browser entirely. Your choices are Firefox 3.5+, Chrome 2+, Safari 4+ or Opera 10.5+. </li></ul> <b>Note:</b> Internet Explorer 9 fully supports the canvas tag.</div>');
+        }
+    </script>
+	<div id="loading_img">正在载入..</div>
+    <div style="text-align: center">
+        <canvas id="led" width="500" height="200" >[No canvas support]</canvas>
+        <canvas id="pie3" width="400" height="300" style="cursor: default; ">[No canvas support]</canvas>
+		<canvas id="hbar" width="900" height="300" style="border: 1px solid gray; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; ">[No canvas support]</canvas>
+    </div>
+	
+</wicket:extend>

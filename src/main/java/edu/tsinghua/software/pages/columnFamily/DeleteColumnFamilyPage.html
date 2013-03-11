@@ -1,0 +1,26 @@
+<wicket:extend>
+
+	<div class="browsePath">
+		<h4>
+			<a wicket:id="clusterNavigation"><span wicket:id="clusterName"></span></a>
+			>> <a wicket:id="keyspaceNevigation"><span
+				wicket:id="keyspaceName"></span></a> >>Drop Column Family
+		</h4>
+	</div>
+	
+	<div wicket:id="feedback"></div>
+	
+	<form wicket:id="userForm" class="group">
+		<h3>ColumnFamily List</h3>
+		<div class="itemList">
+			<span wicket:id="listColumnFamilies"></span>
+		</div>
+		<div>
+		<a href="#" wicket:id="checkAll">Check All</a> <a href="#"
+			wicket:id="uncheckAll">Uncheck All</a>
+		</div>
+	<!-- 	<div><input type="submit" value="Drop"/></div> -->
+       <input type="submit" value="Drop" wicket:id="drop"/> 
+		 
+	</form>
+</wicket:extend>

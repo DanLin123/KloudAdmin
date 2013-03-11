@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Login</title>
+<link rel="stylesheet" type="text/css" media="screen"
+	href="css/login.css" />
+</head>
+<body class="loginform">
+	<div id="wrap">
+		<div class="container" id="main">
+			<a href="http://166.111.131.53/trac/Test/wiki/WikiStart?version=49"
+				target="_blank" class="logo"><img src="./LaUDlogo.png"
+				id="imLogo" name="imLogo" alt="KloudAdmin" border="0"></a>
+			<h1>
+				Welcome to
+				<bdo dir="ltr" xml:lang="en">Kloud Admin </bdo>
+			</h1>
+
+			<!-- <form method="post"
+				target="_parent"  wicket:id ="form">
+			
+			</form> -->
+			<br>
+			<!-- Login form -->
+			<form wicket:id="inputForm" name="login_form" target="_top"
+				class="login">
+					<input type="hidden" name="db" value=""><input type="hidden"
+					name="table" value=""><input type="hidden" name="token"
+					value="ccf378e065acfad3ef5251519a1ab6ff">
+				<fieldset>
+					<legend xml:lang="en" dir="ltr">Language</legend>
+					<select wicket:id="languge"></select>
+					<!-- <select name="lang" class="autosubmit" xml:lang="en" dir="ltr">
+						<option value="en" >English</option>
+						<option value="zh_CN" >中文 - Chinese simplified</option>
+					</select> -->
+				</fieldset>
+				<fieldset>
+					<legend> Log in</legend>
+
+					<table class="Item">
+						<!-- host -->
+						<tr>
+							<td><label>Host:</label></td>
+							<td><input type="text" wicket:id="host" id="Host" value=""
+								size="24" class="textfield"></td>
+						</tr>
+						<tr>
+							<td><label>Thrift Port：</label></td>
+							<td><input type="text" id="Trift_Port" value="" size="24"
+								class="textfield" wicket:id="thrift"></td>
+						</tr>
+						<tr>
+							<td><label>JMX Port:</label></td>
+							<td><input type="text" id="JMX Port:" value="" size="24"
+								class="textfield" wicket:id="JMX"></td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset class="tblFooters">
+					<input value="Connect" type="submit" id="input_go"
+						wicket:id="connect">
+				</fieldset>
+			</form>
+			<span wicket:id="feedback">output message</span>
+		</div>
+	</div>
+	
+
+	<!-- <div id="footer">
+		<p>Copyright 2012 School of Software Tsinghua University All
+			rights reserved</p>
+	</div>
+	 -->
+
+</body>
+</html>

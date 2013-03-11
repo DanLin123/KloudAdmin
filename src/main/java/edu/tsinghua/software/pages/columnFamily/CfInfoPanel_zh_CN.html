@@ -1,0 +1,67 @@
+<wicket:panel>
+<div>
+<!-- 			<h3>ColumnFamily Settings</h3> -->
+			<!-- use tabel to show keyspace detail  -->
+			<table class="infoTable">
+				<tbody>
+					<tr>
+						<th>表空间：</th>
+						<td wicket:id="keyspace"></td>
+					</tr>
+					<tr>
+						<th>表名：</th>
+						<td wicket:id="columnFamilyName"></td>
+					</tr>
+					<tr>
+						<th>表类型：</th>
+						<td wicket:id="ColumnType"></td>
+					</tr>
+					<tr>
+						<th>比较器：</th>
+						<td wicket:id="comparators"></td>
+					</tr>
+					<tr>
+						<th>备注：</th>
+						<td wicket:id="comment"></td>
+					</tr>
+					<tr>
+						<th>行缓存大小：</th>
+						<td wicket:id="rowsCached"></td>
+					</tr>
+					<tr>
+						<th>行缓存保存时间(s):</th>
+						<td wicket:id="rowCacheSavePeriod"></td>
+					</tr>
+					<tr>
+						<th>关键字缓存大小:</th>
+						<td wicket:id="keysCached"></td>
+					</tr>
+					
+					<tr>
+						<th>关键字缓存保存时间(s):</th>
+						<td wicket:id="keyCacheSavePeriod"></td>
+					</tr>
+					<tr>
+						<th>读修复几率:</th>
+						<td wicket:id="readRepair"></td>
+					</tr>
+					<tr>
+						<th>垃圾收集频率（s）:</th>
+						<td wicket:id="gc"></td>
+					</tr>
+					<tr>
+						<th>验证器:</th>
+						<td wicket:id="defaultValidationClass"></td>
+					</tr>
+					<tr>
+						<th>最小压缩时间:</th>
+						<td wicket:id="minCompactionThreshold"></td>
+					</tr>
+					<tr>
+						<th>最大压缩时间:</th>
+						<td wicket:id="maxCompactionThreshold"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</wicket:panel>
