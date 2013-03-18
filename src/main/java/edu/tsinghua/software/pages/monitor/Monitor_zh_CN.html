@@ -3,6 +3,7 @@
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="./js/excanvas.min.js"></script><![endif]-->
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.image.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.collectd.js"></script>
 <script src="js/jquery-ui-timepicker-addon.js"></script>
 <script src="js/jquery.selectBox.min.js" type="text/javascript"></script>
 <link href="css/jquery.selectBox.css" rel="stylesheet" type="text/css" />
@@ -34,6 +35,35 @@ function plot(chartID, series_list, metric)
 	    
 }
 
+function testDrawGraph() {
+    var backend = 'MonCassa';
+    var url = 'http://localhost:5000';
+
+    var cpuGraph = {'title': 'CPU Usage', 
+                    'plugin': 'cpu', 
+                    'type': 'cpu',
+                    'chartID': 'cpu',
+                    'type_instances': [['system', 'System'],
+                                       ['user', 'User']],
+                    'plugin_instances': [['0', 'CPU-1']],
+                    'label_formatter': '{plugin_instance} - {type_instance}',
+                    'host': 'ld-VirtualBox',
+                    'ds_name':'value',
+                    'unit': 'Jitties',
+                    'start': 1363595200, // unix timestamp in seconds
+                    'end': 1363596200 };
+  
+   
+    var options = {
+        graphs: [cpuGraph],
+        backend: {
+            name: backend,
+            url: url
+        }
+    };
+    $('#graphs').collectdGraph(options);
+}
+
 function getGraphImage(){
 	var timeStartObj = $('#startSelector').datetimepicker('getDate');
 	var timeEndObj = $('#endSelector').datetimepicker('getDate');
@@ -43,50 +73,9 @@ function getGraphImage(){
 			timeEnd = timeEndObj.getTime();
 		}
 	recentTime = $('#time-dropdown').attr('value');
-	console.log(recentTime);
-	tags = JSON.stringify({'host':'ld-VirtualBox','type_instance':'idle','plugin_instance':'0'});
-	console.log($.now());
-	var metric = $('#metricInput').val();
-	console.log(metric)
-	var series1 = {'label': 'test1', 'data': []};
-	var series2 = {'label': 'test2', 'data': []};
+	testDrawGraph();
 	
-    search_input = {'metric': 'cpu.cpu', 'starttime': 1362903850, 'endtime': 1362903940,'tags': tags};
- 
-	$.ajax({
-		url : 'http://localhost:5000/read',
-		type : 'POST',
-		dataType : 'json',
-		data :  search_input,
-		success : function(data) {
-			console.log(data);
-			console.log(data.results);	
-			if (data.success == true){
-				$('#loading').text('success');
-				console.log(data);
-			    $('#loading').hide();
-			    var line = new Array();
-			    $.each(data.results, function(k, v) {
-			        console.log(k);
-			        console.log(v);
-			        var point = new Array();
-					point[0] = k * 1000;
-					point[1] = v;
-					var point2 = new Array();
-					point2[0] = k * 1000;
-					point2[1] = v+100;
-					series1['data'].push(point);
-					series2['data'].push(point2);
-			    });
-			    series_list = [series1, series2]
-			    plot('cpu', series_list, metric);
-			} else {
-				loadFailed();
-			}
 
-		},
-		error : loadFailed
-	});
 }
 
 
