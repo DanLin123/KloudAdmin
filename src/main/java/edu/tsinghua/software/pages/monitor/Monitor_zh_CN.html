@@ -1,6 +1,7 @@
 
 <wicket:head>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="./js/excanvas.min.js"></script><![endif]-->
+<script src="js/monitorConfig.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.image.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.collectd.js"></script>
@@ -14,48 +15,26 @@ var timeEnd = 0;
 var objectList = new Array();
 var selectObject;
 var recentTime = '0';
-function loadFailed(){ 
-	$('#loading').text('无法获得监控数据');
-}
-
-
-function plot(chartID, series_list, metric)
-{
-	$('#graphs').append("<div id='"+chartID+"' style=\"width: 400px; height:200px;margin-bottom:20px;margin-left:60px;float:left\"></div>");
-	console.log('Drawing graph with following data:')
-	console.log(series1);
-    var options = {
-            lines: { show: true },
-            points: { show: true },
-            xaxis: { mode: "time" }
-        };
-    var placeholder = $("#"+chartID);
-     
-    $.plot(placeholder, series_list, options);
-	    
-}
+var hosts = ['ld-VirtualBox'];
+var host;
 
 function testDrawGraph() {
-    var backend = 'MonCassa';
-    var url = 'http://localhost:5000';
+ 
+    var start_time = 1363595200;
+    var end_time = 1363596200;
+ 
+     
+    for (var i=0; i<graph_plot.length; i++)
+    {
+    	graph_plot[i].host = host;
+    	graph_plot[i].start = start_time;
+    	graph_plot[i].end = end_time;
+    } 
 
-    var cpuGraph = {'title': 'CPU Usage', 
-                    'plugin': 'cpu', 
-                    'type': 'cpu',
-                    'chartID': 'cpu',
-                    'type_instances': [['system', 'System'],
-                                       ['user', 'User']],
-                    'plugin_instances': [['0', 'CPU-1']],
-                    'label_formatter': '{plugin_instance} - {type_instance}',
-                    'host': 'ld-VirtualBox',
-                    'ds_name':'value',
-                    'unit': 'Jitties',
-                    'start': 1363595200, // unix timestamp in seconds
-                    'end': 1363596200 };
-  
+    
    
-    var options = {
-        graphs: [cpuGraph],
+      var options = {
+        graphs:graph_plot,
         backend: {
             name: backend,
             url: url
@@ -73,9 +52,9 @@ function getGraphImage(){
 			timeEnd = timeEndObj.getTime();
 		}
 	recentTime = $('#time-dropdown').attr('value');
+	
 	testDrawGraph();
 	
-
 }
 
 
@@ -95,10 +74,8 @@ $(document).ready(function(){
 			stepMinute: 10,
 			stepSecond: 10
 		});		  
-	    $("#time-dropdown").selectBox();
-	    $("#time-dropdown")
-		.selectBox()
-		.change( function() {
+
+	    $("#time-dropdown").change( function() {
 			recentTime = $(this).attr('value');
 			console.log(recentTime);
 			if(recentTime == 0){
@@ -111,10 +88,18 @@ $(document).ready(function(){
 			}
 		
 		});
+	    for (var i = 0; i < hosts.length; i++) {
+	        $('#hostSelector').append('<option value="' + hosts[i] +'">' +
+	        							hosts[i]+ '</option>');
+	    }
+	    host = hosts[0];
+	  
+	    $("#hostSelector").change( function() {
+			host = $(this).attr('value');
+		});
 	    
 	    $('#go').click(function(e){
 	    	$('#graphs').empty();
-	    	 $('#loading').show();
 	    	e.preventDefault();
 	    	getGraphImage();
 	  
@@ -128,7 +113,7 @@ $(document).ready(function(){
  		 <div class="row span14">
  		 	<form class='well form-inline'>
 				<label id="timeScale">时间选择</label>
-				<select id="time-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 80px;">
+				<select id="time-dropdown" name="standard-dropdown" class="custom-class1 custom-class2" style="width: 120px;">
 				    <option value="0" >手动选择</option>
 					<option value="1200000" selected="selected">最近20分钟</option>
 					<option value="3600000">最近1小时</option>
@@ -140,16 +125,19 @@ $(document).ready(function(){
 				</select>
 				
 			    <label>开始</label>
-			    <input type="text" id="startSelector"  disabled="disabled" style="width: 120px;" />
+			    <input type="text" id="startSelector" disabled="disabled" style="width: 120px;" />
 			    <label>结束</label>
 				<input type="text" id="endSelector" disabled="disabled" style="width: 120px;" />
+				 <label>机器</label>
+				<select type="text" id="hostSelector" style="width: 120px;">
+				</select>
 				<button class="btn" id="go">执行</button>
 			</form>
 		</div>
-<div class="row span12">
-	  <p id ="loading" style="display: none" >正在获得监控数据..</p>
+		
+<div class="span12">
 	</div>
-	<div id="graphs" class="row span12">
+	<div id="graphs" class="row">
 	</div>
 	 
 </wicket:extend>

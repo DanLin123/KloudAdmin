@@ -210,4 +210,6 @@ p
         border: 1px solid #9C9898;
       }
       
-
+.collectd-graph.span6 {
+	float: left;
+}
